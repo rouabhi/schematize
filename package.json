@@ -1,0 +1,25 @@
+{
+  "name": "schematize",
+  "version": "0.0.1",
+  "description": "An encapsulation of 'Sequelize' and 'treble' packages to handle 3 databases using external schema files.",
+  "repository": {
+    "type": "git",
+    "url": "github.com/rouabhi/schematize"
+  },
+  "main": "index.js",
+  "keywords": [
+    "Sequelize",
+    "databases",
+    "mySql",
+    "ORM"
+  ],
+  "author": {
+    "name": "Samir ROUABHI",
+    "email": "rouabhi@gmail.com"
+  },
+  "license": "GNU GPL v2",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "treble": "*"
+  }
+}
