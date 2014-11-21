@@ -103,3 +103,21 @@ An other example with **destroy**:
 }
 
 ```
+## Batch processing ##
+When you have to open more than ONE table to do a task, you have to use the batch style of the command by giving an array as 'schema' argument. The succes event is fired when ALL the tables are opened. If ONE schema at least does not exist, an error is fired:
+```javascript
+schematize("admin",["users","companies","databases"],db3)
+    .then( function( tables ){
+        tables.users.find( {login,"myLogin"}).then(
+            function( oneLogin ){
+                console.log( "User credencials: ",oneLogin(['login','password','email']) );
+            },
+            function(  ){
+                console.log( "User not found!" );
+            },
+        )
+    },
+    function(tables){
+        console.log("An error occured..");
+    });
+```
