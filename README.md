@@ -23,7 +23,20 @@ To use **schematize** you should add **schematize**, **sequelize**, **mysql** an
 
 schematize is called with 3 parameters:
 * db : database admin|modele|user.
-* schema : Is the table name, described by a schema file situated in "***schemas/[db]/[schema].js***"
+* schema : Is the table name, described by a schema file
+* db3 is a connection object created with *treble* package.
+
+## Where to put schemas ? ##
+To configure the path where to find schema files, you should use one of the two syntaxes:
+**syntax 1:**
+```javascript
+schematize.config({path:__dirname+"/schemas/"})
+```
+In this case, schemas are in 3 subdirectories named "admin/","modele/","user/" from the specified path.
+**syntax 2:**
+```javascript
+schematize.config({path:{admin:__dirname+"/schemas/admin/", modele:__dirname+"/schemas/modele/",user:__dirname+"/schemas/user/"})
+```
 
 Example of content for _users.js_:
 ```javascript

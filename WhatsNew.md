@@ -1,5 +1,8 @@
 #Schematize - What's new#
 
+##v 0.0.4 config##
+Now you have to call .config method to contigure the path where to find schema files.
+
 ##v 0.0.3 add batch processing##
 You can now open more than ONE table giving an array of string as schema argument.
 

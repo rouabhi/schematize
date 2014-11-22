@@ -9,6 +9,12 @@
  *****************************************************/
 // TODO :  add extra control on db & schema arguments
 
+var varServer = require("varserver")();
+var schemasPath= varServer.get("schematizePath" , {
+						admin:"schemas/admin/",
+						modele:"schemas/modele/",
+						user:"schemas/user/"
+					});
 
 module.exports = schematize;
 
@@ -36,20 +42,20 @@ function schemabatch(db , schemas , db3) {
 function schematize(db, schema, db3) {
 	var oSchema, oTable, oFields, oFieldsNoHidden, oFieldsKey;
 	var jSchema;
-	var path;
+	var pSchema; // schema file path
 	var onSuccess=new Function(), onError=new Function();
 
 	// if schema is an array of strings, call 'schemabatch'
 	if (typeof schema =="object" && "length" in schema) return schemabatch(db,schema,db3);
 	switch (db){
 		case "a":
-		case "admin" : db = "admin"; path = require("path").join(__dirname , "../../schemas/admin/", schema); break;
+		case "admin" : db = "admin"; pSchema = require("path").join(schemasPath.admin, schema); break;
 		case "m":
-		case "modele" : db = "modele"; path = "../../schemas/modele/"+schema; break;
-		default : db = "user"; path = "../../schemas/user/"+schema;
+		case "modele" : db = "modele"; pSchema = require("path").join(schemasPath.modele, schema) ; break;
+		default : db = "user"; pSchema = require("path").join(schemasPath.user, schema);
 	}
+		oSchema = require(pSchema);
 	try {
-		oSchema = require(path);
  	}
 	catch(e){
 		return {success:function(){return this;},error:function(e){e();return this;},then:function(success,error){error();return this;}};
@@ -245,4 +251,23 @@ function schematize(db, schema, db3) {
 		return result;
 	}
 
+}
+
+schematize.config = function( options ){
+	if (options){
+		if (options.path){
+			if (typeof options.path == "string") {
+				schemasPath.admin = options.path + "admin/";
+				schemasPath.modele = options.path + "modele/";
+				schemasPath.user = options.path + "user/";
+				varServer.set("schematizePath" , schemasPath);
+			}
+			else {
+				if (options.path.admin) schemasPath.admin = options.path.admin;
+				if (options.path.modele) schemasPath.modele = options.path.modele;
+				if (options.path.user) schemasPath.user = options.path.user;
+				varServer.set("schematizePath" , schemasPath);
+			}
+		}
+	}
 }
