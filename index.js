@@ -270,4 +270,5 @@ schematize.config = function( options ){
 			}
 		}
 	}
+	return schematize;
 }

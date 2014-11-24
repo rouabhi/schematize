@@ -1,5 +1,8 @@
 #Schematize - What's new#
 
+##v 0.0.5 config## returns schematize
+Now, you can write: ```var schematize = require("schematize").config({...});```
+
 ##v 0.0.4 config##
 Now you have to call .config method to contigure the path where to find schema files.
 
