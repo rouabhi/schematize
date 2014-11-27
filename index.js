@@ -54,10 +54,10 @@ function schematize(db, schema, db3) {
 		case "modele" : db = "modele"; pSchema = require("path").join(schemasPath.modele, schema) ; break;
 		default : db = "user"; pSchema = require("path").join(schemasPath.user, schema);
 	}
-		oSchema = require(pSchema);
 	try {
+		oSchema = require(pSchema);
  	}
-	catch(e){
+	catch(err){
 		return {success:function(){return this;},error:function(e){e();return this;},then:function(success,error){error();return this;}};
 	}
 	jSchema = oSchema(require("./myTypes"))[1];
@@ -108,7 +108,7 @@ function schematize(db, schema, db3) {
 		return {
 			success:function(e){e(sentObj);return this;},
 			error:function(e){return this;},
-			then:function(success,error){error();return this;}
+			then:function(success,error){success(sentObj);return this;}
 		}
   	}
 
