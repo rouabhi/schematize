@@ -163,12 +163,14 @@ function schematize(db, schema, db3, force) {
 			onError = new Function();
 		 
 		if (!oTable) return {
-			success:function(e){return this;},
+			success:function(){return this;},
 			error:function(e){e();return this;},
 			then:function(success,error){error();return this;}
 		}
-
-		oTable.create(values , {fields:fields}).then( function(result){onSuccess(data2func(result));}, function(){onError();} );
+		fields = fields || [];
+		for(var field in values) if (fields.indexOf(field)<0) fields.push( field );
+		
+		oTable.create(values , fields).then( function(result){onSuccess(data2func(result));}, function(e){onError(e);} );
 		return {
 			success:function(e){onSuccess=e;return this;},
 			error:function(e){onError=e;return this;},
