@@ -19,7 +19,7 @@ var schemasPath= varServer.get("schematizePath" , {
 module.exports = schematize;
 
 
-function schemabatch(db , schemas , db3) {
+function schemabatch(db , schemas , db3, force) {
  var remain = schemas.length,
 	 tables={},
 	 err=false,
@@ -30,7 +30,7 @@ function schemabatch(db , schemas , db3) {
 	 complete = function() {if (err) onError(tables); else onSuccess(tables);};
  
  for(var index=0; index<schemas.length; index++) {
-    schematize(db,schemas[index],db3).then(successSchemaEvt(schemas[index]),errorSchemaEvt(schemas[index]));
+    schematize(db,schemas[index],db3,force).then(successSchemaEvt(schemas[index]),errorSchemaEvt(schemas[index]));
   }
  return {
   success:function(e){onSuccess=e;return this;},
@@ -39,7 +39,7 @@ function schemabatch(db , schemas , db3) {
  };
 }
 
-function schematize(db, schema, db3) {
+function schematize(db, schema, db3, force) {
 	var oSchema, oTable, oFields, oFieldsNoHidden, oFieldsKey;
 	var jSchema;
 	var pSchema; // schema file path
@@ -97,7 +97,7 @@ function schematize(db, schema, db3) {
 		create:addData
 	}
 	if (db3) {
-		oTable.sync().then( function(){ onSuccess(sentObj); }, function(e){onError(e);} );
+		oTable.sync({force:!!force}).then( function(){ onSuccess(sentObj); }, function(e){onError(e);} );
 		return {
 			success:function(e){onSuccess=e;return this;},
 			error:function(e){onError=e;return this;},

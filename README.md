@@ -137,3 +137,12 @@ schematize("admin",["users","companies","databases"],db3)
         console.log("An error occured..");
     });
 ```
+## Force table drop ##
+If you want to open one or more **new** tables, and drop them is they exist already, you can add a 4th argument (force) for ```schematize(...)``` :
+
+```javascript
+// tables dropped if exist
+schematize("user",["products","custumers","bills"],db3,true)
+    .then( function( tables ){
+    }
+```

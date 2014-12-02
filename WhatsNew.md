@@ -1,5 +1,8 @@
 #Schematize - What's new#
 
+##v 0.0.7 'force' argument##
+Now, schematize and schemabatch have a force argument to drop table before creation.  ```schematize(db, schema, db3, force);``` and ```schematize(db, [schemas], db3, force)```
+
 ##v 0.0.5 config## returns schematize
 Now, you can write: ```var schematize = require("schematize").config({...});```
 
