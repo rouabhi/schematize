@@ -46,7 +46,7 @@ function schematize(db, schema, db3, force) {
 	var onSuccess=new Function(), onError=new Function();
 
 	// if schema is an array of strings, call 'schemabatch'
-	if (typeof schema =="object" && "length" in schema) return schemabatch(db,schema,db3);
+	if (typeof schema =="object" && "length" in schema) return schemabatch(db,schema,db3,force);
 	switch (db){
 		case "a":
 		case "admin" : db = "admin"; pSchema = require("path").join(schemasPath.admin, schema); break;
