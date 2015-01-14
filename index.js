@@ -167,9 +167,6 @@ function schematize(db, schema, db3, force) {
 			error:function(e){e();return this;},
 			then:function(success,error){error();return this;}
 		}
-		fields = fields || [];
-		for(var field in values) if (fields.indexOf(field)<0) fields.push( field );
-		
 		oTable.create(values , fields).then( function(result){onSuccess(data2func(result));}, function(e){onError(e);} );
 		return {
 			success:function(e){onSuccess=e;return this;},

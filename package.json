@@ -1,6 +1,6 @@
 {
   "name": "schematize",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "An encapsulation of 'Sequelize' and 'treble' packages to handle 3 databases using external schema files.",
   "repository": {
     "type": "git",
