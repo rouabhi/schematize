@@ -61,6 +61,7 @@ module.exports = function(DataTypes) {
 The object given by the success handler offers the following methods:
  * tUsers.find( {*options*}) -> promise,function
  * tUsers.findAll( {*options*})
+ * tUsers.count( {*options*} )
  * tUsers.update(values , where , fields)
  * tUsers.destroy({*where*:{*filter*}})
  * tUsers.create({*values*},[*fields*])

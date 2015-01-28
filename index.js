@@ -94,7 +94,8 @@ function schematize(db, schema, db3, force) {
 		findAll:loadData,
 		update:updateData,
 		destroy:destroyData,
-		create:addData
+		create:addData,
+		count:countData
 	}
 	if (db3) {
 		oTable.sync({force:!!force}).then( function(){ onSuccess(sentObj); }, function(e){onError(e);} );
@@ -134,6 +135,25 @@ function schematize(db, schema, db3, force) {
 		Options = Options || {};
 		if (typeof Options.limit !== "number") Options.limit = 20;
 		oTable.findAll(Options).then( function(result){onSuccess(data2func(result));}, function(e){onError();} );
+		return {
+			success:function(e){onSuccess=e;return this;},
+			error:function(e){onError=e;return this;},
+			then:function(success,error){onSuccess=success||onSuccess;onError=error||onError;return this;}
+		};
+	}
+
+	function countData( Options ) {
+		var onSuccess = new Function(),
+			onError = new Function();
+		 
+		if (!oTable) {
+			return {
+					success:function(){return this;},
+					error:function(e){e();return this;},
+					then:function(success,error){error();return this;}
+				};
+		}
+		oTable.count(Options).then( function(result){onSuccess(result);}, function(e){onError();} );
 		return {
 			success:function(e){onSuccess=e;return this;},
 			error:function(e){onError=e;return this;},

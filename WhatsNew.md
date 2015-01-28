@@ -1,5 +1,7 @@
 #Schematize - What's new#
 
+##v 0.0.11 added .count method ##
+
 ##v 0.0.7 'force' argument##
 Now, schematize and schemabatch have a force argument to drop table before creation.  ```schematize(db, schema, db3, force);``` and ```schematize(db, [schemas], db3, force)```
 
