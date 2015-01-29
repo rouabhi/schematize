@@ -15,6 +15,13 @@ var schemasPath= varServer.get("schematizePath" , {
 						modele:"schemas/modele/",
 						user:"schemas/user/"
 					});
+var promiseError = {
+		success:function(){return this;},
+		done:function(){return this;},
+		error:function(e){e();return this;},
+		fail:function(e){e();return this;},
+		then:function(success,error){error();return this;}
+	};
 
 module.exports = schematize;
 
@@ -58,7 +65,7 @@ function schematize(db, schema, db3, force) {
 		oSchema = require(pSchema);
  	}
 	catch(err){
-		return {success:function(){return this;},error:function(e){e();return this;},then:function(success,error){error();return this;}};
+		return promiseError;
 	}
 	jSchema = oSchema(require("./myTypes"))[1];
 	for(var field in jSchema) {
@@ -125,13 +132,7 @@ function schematize(db, schema, db3, force) {
 		var onSuccess = new Function(),
 			onError = new Function();
 		 
-		if (!oTable) {
-			return {
-					success:function(){return this;},
-					error:function(e){e();return this;},
-					then:function(success,error){error();return this;}
-				};
-		}
+		if (!oTable) return promiseError;
 		Options = Options || {};
 		if (typeof Options.limit !== "number") Options.limit = 20;
 		oTable.findAll(Options).then( function(result){onSuccess(data2func(result));}, function(e){onError();} );
@@ -146,13 +147,7 @@ function schematize(db, schema, db3, force) {
 		var onSuccess = new Function(),
 			onError = new Function();
 		 
-		if (!oTable) {
-			return {
-					success:function(){return this;},
-					error:function(e){e();return this;},
-					then:function(success,error){error();return this;}
-				};
-		}
+		if (!oTable) return promiseError;
 		oTable.count(Options).then( function(result){onSuccess(result);}, function(e){onError();} );
 		return {
 			success:function(e){onSuccess=e;return this;},
@@ -165,11 +160,7 @@ function schematize(db, schema, db3, force) {
 		var onSuccess = new Function(),
 			onError = new Function();
 
-		if (!oTable) return {
-			success:function(){return this;},
-			error:function(e){e();return this;},
-			then:function(success,error){error();return this;}
-		};
+		if (!oTable) return promiseError;
 		oTable.update(values , where , fields).then( function(result){onSuccess(data2func(result));}, function(){onError();} );
 		return {
 			 success:function(e){onSuccess=e;return this;},
@@ -182,11 +173,7 @@ function schematize(db, schema, db3, force) {
 		var onSuccess = new Function(),
 			onError = new Function();
 		 
-		if (!oTable) return {
-			success:function(){return this;},
-			error:function(e){e();return this;},
-			then:function(success,error){error();return this;}
-		}
+		if (!oTable) return promiseError;
 		oTable.create(values , fields).then( function(result){onSuccess(data2func(result));}, function(e){onError(e);} );
 		return {
 			success:function(e){onSuccess=e;return this;},
@@ -199,11 +186,7 @@ function schematize(db, schema, db3, force) {
 		var onSuccess = new Function(),
 			onError = new Function();
 	 
-		if (!oTable) return {
-			success:function(e){return this;},
-			error:function(e){e();return this;},
-			then:function(success,error){error();return this;}
-		}
+		if (!oTable) return promiseError;
 		oTable.destroy(where).then( function(result){onSuccess(data2func(result));}, function(){onError();} );
 		return {
 			success:function(e){onSuccess=e;return this;},
@@ -222,15 +205,19 @@ function schematize(db, schema, db3, force) {
 		 else return function(fields, methods, noHidden){return modele2data( data, fields, methods, noHidden );}
 	}
 
+		// Options : findAll values +
+		//   other possible values: (page, bypage)  ==>> (limite,offset)
 	function findData( Options ) {
 		var onSuccess = new Function(),
 			onError = new Function();
 	 
-		if (!oTable) return {
-			success:function(e){return this;},
-			error:function(e){e();return this;},
-			then:function(success,error){error();return this;}
-		}
+		if (!oTable) return promiseError;
+	 	if (Options && Options.page){
+	 		Options.limit = Options.bypage || 20;
+	 		Options.offset = Options.limit * (Options.page-1);
+	 		delete Options.bypage;
+	 		delete Options.page;
+	 	}
 
 		oTable.find(Options).then( function(result){onSuccess(data2func(result),result);}, function(err){onError(null);} );
 		return {

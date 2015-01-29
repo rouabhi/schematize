@@ -1,5 +1,7 @@
 #Schematize - What's new#
 
+##v 0.0.12 added .page and .bypage parameters for findData method ##
+
 ##v 0.0.11 added .count method ##
 
 ##v 0.0.7 'force' argument##
